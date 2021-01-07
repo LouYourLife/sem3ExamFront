@@ -84,13 +84,7 @@ function App() {
     </div>
   );
 }
-{
-  /* <Login
-            loginMsg={loggedIn ? "Logout" : "Login"}
-            loggedIn={loggedIn}
-            setLoginStatus={setLoginStatus}
-          /> */
-}
+
 
 function FetchDefault() {
   const [array, setArray] = useState([]);
