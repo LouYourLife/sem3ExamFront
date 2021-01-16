@@ -52,10 +52,11 @@ function App() {
           <Home />
         </Route>
         <Route path="/page1">
+          {/* Change */}
           <FetchDefault />
         </Route>
         <Route path="/page2">
-          <Placeholder />
+          <FetchUserCount />
         </Route>
         <Route path="/page3">
           <User />
@@ -85,7 +86,7 @@ function App() {
   );
 }
 
-
+// Remove
 function FetchDefault() {
   const [array, setArray] = useState([]);
 
@@ -101,6 +102,21 @@ function FetchDefault() {
           return <li>{data}</li>;
         })}
       </ul>
+    </div>
+  );
+}
+
+function FetchUserCount() {
+  const [count, setCount] = useState();
+
+  useEffect(() => {
+    facade.fetchCount(setCount);
+  }, []);
+  
+  return (
+    <div>
+      <h3>Amount of users in database:</h3>
+      <p>{count}</p>
     </div>
   );
 }
@@ -179,6 +195,8 @@ function Placeholder() {
 function User() {
   const [errorUser, setErrorUser] = useState("");
   const [dataFromServer, setDataFromServer] = useState("Error");
+  const [title, setTitle] = useState("");
+  const [books, setBooks] = useState([]);
   useEffect(() => {
     facade
       .fetchDataUser()
@@ -190,10 +208,64 @@ function User() {
       });
   }, []);
 
+  const handleChange = (event) => {
+    const target = event.target;
+    const property = target.id;
+    const value = target.value;
+    setTitle(value);
+  };
+
+  const submitTitle = () => {
+    facade.fetchBookByTitle(setBooks, title);
+  }
+
   return (
     <div>
       <h3>{dataFromServer}</h3>
       <p>{errorUser}</p>
+      <p>Search function here</p>
+      <input
+      type="text"
+      id="bookTitle"
+      onChange={handleChange}
+      />
+      <button onClick={submitTitle}>
+        Find books
+      </button>
+      <br/>
+      <br/>
+      <table>
+        <thead>
+          <tr>
+            <th>ISBN Number</th>
+            <th>Book Title</th>
+            <th>Publisher</th>
+            <th>Published Year</th>
+            <th>Author(s)</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {books.map((x) => {
+            return(
+              <>
+              <tr>
+                <td>{x.isbn}</td>
+                <td>{x.title}</td>
+                <td>{x.publisher}</td>
+                <td>{x.publishYear}</td>
+                <td>{x.authors.map((y) => {
+                  return(
+                    <p>{y.name}</p>
+                  );
+                })}</td>
+              </tr>
+              </>
+            );
+          })}
+        </tbody>
+      </table>
+      <p>List of all books here</p>
     </div>
   );
 }

@@ -3,7 +3,9 @@ import {
     userInfoEndpoint,
     adminInfoEndpoint,
     defaultEndpoint,
-    loginEndpoint} from "./settings";
+    loginEndpoint,
+    userCount,
+    searchBook} from "./settings";
 
  
 function handleHttpErrors(res) {
@@ -48,6 +50,7 @@ const fetchDataAdmin = () => {
    return fetch(mainURL + adminInfoEndpoint, options).then(handleHttpErrors);
 }
 
+// Will not be used
 const fetchDefault = (callback) => {
     const options = makeOptions("GET"); 
    return fetch(mainURL + defaultEndpoint, options)
@@ -55,6 +58,23 @@ const fetchDefault = (callback) => {
    .then(data => {callback(data)})
    
 }
+
+// Will be deleted!
+const fetchCount = (callback) => {
+  const options = makeOptions("GET");
+  return fetch(mainURL + userCount, options)
+  .then(handleHttpErrors)
+  .then(data => {callback(data)})
+}
+
+const fetchBookByTitle = (callback, title) => {
+  const options = makeOptions("GET", true);
+  return fetch(mainURL + searchBook + title, options)
+  .then(handleHttpErrors)
+  .then((data) => {
+    callback(data);
+  });
+};
 
 
 const makeOptions= (method,addToken,body) =>{
@@ -82,7 +102,9 @@ const makeOptions= (method,addToken,body) =>{
      logout,
      fetchDataUser,
      fetchDataAdmin,
-     fetchDefault
+     fetchDefault,
+     fetchCount, 
+     fetchBookByTitle
  }
 }
 const facade = apiFacade();
