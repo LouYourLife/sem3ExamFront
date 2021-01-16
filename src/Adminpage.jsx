@@ -7,7 +7,6 @@ function Adminpage() {
   const [dataFromServer, setDataFromServer] = useState("Error!");
   const [newBook, setNewBook] = useState({});
   const [authors, setAuthors] = useState([]);
-  const [query, setQuery] = useState("");
 
   useEffect(() => {
     facade
@@ -20,6 +19,7 @@ function Adminpage() {
       });
   }, []);
 
+  // Clean up!
   const handleChange = (event) => {
       const target = event.target;
       const value = target.value;
@@ -33,21 +33,10 @@ function Adminpage() {
       setNewBook(book);
   };
 
-  const handleArray = (event) => {
-      const target = event.target;
-      const value = target.value;
-      const prop = target.id;
-      const authorList = { ...authors, [prop]: value}
-      setAuthors(authorList);
-      console.log(authors);
-      //setAuthors(authors => [...authors, query])//??
-  }
-
+  // Clean up!
   const handleSubmit = (event) => {
       event.preventDefault();
       console.log(newBook);
-      
-      Help();
 
       let isbn = document.getElementById("isbn").value;
       let title = document.getElementById("title").value;
@@ -72,13 +61,20 @@ function Adminpage() {
       facade.postBook(book2);
   };
 
-  function Help() {
-      let input = document.getElementsByName('authors');
-      for (let i = 0; i < input.length; i++) {
-          let a = input[i];
-          let array = "array[" + i + "].value= " + a.value + " ";
-          setAuthors(array);
-      }
+  const [delBook, setDelBook] = useState();
+  const handleDelete = (event) => {
+      const target = event.target;
+      const value = target.value;
+      setDelBook(value);
+      console.log("1) "+delBook);
+  }
+
+  const deleteBook = (e) => {
+      const id = e.target.id;
+      facade.deleteBook(delBook, setDelBook);
+      //facade.deleteBook(id, setDelBook);
+      console.log("2) "+delBook);
+      console.log("3) " + id);
   }
 
   return (
@@ -124,9 +120,19 @@ function Adminpage() {
           id="author2"
           onChange={handleChange}
           />
-          <button onClick={handleArray}>Add Author</button>
           <br/>
           <button onClick={handleSubmit}>Add Book</button>
+          <br/>
+          <br/>
+          <div>
+              <p>Delete book by ISBN number</p>
+          <input
+          type="number"
+          id="isbnDel"
+          onChange={handleDelete}
+          />
+          <button onClick={deleteBook}>Delete</button>
+          </div>
         </>
       )}
     </div>

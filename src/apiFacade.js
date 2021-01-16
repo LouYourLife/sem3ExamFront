@@ -7,7 +7,8 @@ import {
     userCount,
     searchBook,
     getAllBookTitles,
-    addBook
+    addBook,
+    deleteBook
     } from "./settings";
 
  
@@ -103,6 +104,15 @@ const postBook = (newBook) => {
   .then(handleHttpErrors);
 };
 
+const deleteBook = (delBook, callback) => {
+  const options = makeOptions("DELETE", true);
+  return fetch(mainURL + deleteBook + delBook, options)
+  .then(handleHttpErrors)
+  .then((data) => {
+    callback(data);
+  });
+};
+
 
 const makeOptions= (method,addToken,body) =>{
    var opts = {
@@ -134,7 +144,8 @@ const makeOptions= (method,addToken,body) =>{
      fetchBookByTitle,
      isAdmin, 
      fetchAllBooks,
-     postBook
+     postBook,
+     deleteBook
  }
 }
 const facade = apiFacade();
