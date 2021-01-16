@@ -8,6 +8,8 @@ const defaultEndpoint = "/api/default";
 const loginEndpoint = "/api/login";
 const userCount = "/api/info/all";
 const searchBook = "/api/book/title/";
+const getAllBookTitles = "/api/book";
+const addBook = "/api/book";
 
 export {
     mainURL,
@@ -16,5 +18,7 @@ export {
     defaultEndpoint,
     loginEndpoint,
     userCount, 
-    searchBook
+    searchBook,
+    getAllBookTitles,
+    addBook
 };

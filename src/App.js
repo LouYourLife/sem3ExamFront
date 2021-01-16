@@ -17,6 +17,8 @@ import Login from "./Login";
 import facade from "./apiFacade";
 import LoggedIn from "./LoggedIn";
 import LoginForm from "./loginForm";
+import Userpage from "./Userpage";
+import Adminpage from "./Adminpage";
 
 function App() {
   const [errorMes, setErrorMes] = useState("");
@@ -59,10 +61,12 @@ function App() {
           <FetchUserCount />
         </Route>
         <Route path="/page3">
-          <User />
+          {/* <User /> */}
+          <Userpage />
         </Route>
         <Route path="/page4">
-          <Admin />
+          {/* <Admin /> */}
+          <Adminpage />
         </Route>
         <Route path="/login">
           {!loggedIn ? (
@@ -192,6 +196,7 @@ function Placeholder() {
   return <h3>TODO</h3>;
 }
 
+// Can be deleted, moved to Userpage
 function User() {
   const [errorUser, setErrorUser] = useState("");
   const [dataFromServer, setDataFromServer] = useState("Error");
@@ -223,7 +228,9 @@ function User() {
     <div>
       <h3>{dataFromServer}</h3>
       <p>{errorUser}</p>
-      <p>Search function here</p>
+      {facade.isAdmin().indexOf("user") !== -1 && (
+        <>
+        <p>Search by title</p>
       <input
       type="text"
       id="bookTitle"
@@ -266,10 +273,14 @@ function User() {
         </tbody>
       </table>
       <p>List of all books here</p>
+        </>
+      )}
+      
     </div>
   );
 }
 
+// Can be deleted, moved to Adminpage
 function Admin() {
   const [errorAdmin, setErrorAdmin] = useState("");
   const [dataFromServer, setDataFromServer] = useState("Error!");
@@ -289,6 +300,11 @@ function Admin() {
     <div>
       <h3>{dataFromServer}</h3>
       <p>{errorAdmin}</p>
+      {facade.isAdmin().indexOf("admin") !== -1 && (
+        <>
+        <p>Test</p>
+        </>
+      )}
     </div>
   );
 }

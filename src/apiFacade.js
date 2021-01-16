@@ -5,7 +5,10 @@ import {
     defaultEndpoint,
     loginEndpoint,
     userCount,
-    searchBook} from "./settings";
+    searchBook,
+    getAllBookTitles,
+    addBook
+    } from "./settings";
 
  
 function handleHttpErrors(res) {
@@ -41,6 +44,15 @@ const login = (user, password) => {
       
       
 }
+
+const isAdmin = () => {
+  const jwtData = getToken().split(".")[1];
+  const decodedJwtJsonData = window.atob(jwtData);
+  const decodedJwtData = JSON.parse(decodedJwtJsonData);
+  const isAdmin = decodedJwtData.roles;
+  return isAdmin;
+}
+
 const fetchDataUser = () => {
     const options = makeOptions("GET",true); //True add's the token
    return fetch(mainURL + userInfoEndpoint, options).then(handleHttpErrors);
@@ -76,6 +88,21 @@ const fetchBookByTitle = (callback, title) => {
   });
 };
 
+const fetchAllBooks = (callback) => {
+  const options = makeOptions("GET", true);
+  return fetch(mainURL + getAllBookTitles, options)
+  .then(handleHttpErrors)
+  .then((data) => {
+    callback(data);
+  });
+};
+
+const postBook = (newBook) => {
+  const options = makeOptions("POST", true, newBook);
+  return fetch(mainURL + addBook, options)
+  .then(handleHttpErrors);
+};
+
 
 const makeOptions= (method,addToken,body) =>{
    var opts = {
@@ -104,7 +131,10 @@ const makeOptions= (method,addToken,body) =>{
      fetchDataAdmin,
      fetchDefault,
      fetchCount, 
-     fetchBookByTitle
+     fetchBookByTitle,
+     isAdmin, 
+     fetchAllBooks,
+     postBook
  }
 }
 const facade = apiFacade();
