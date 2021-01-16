@@ -8,7 +8,8 @@ import {
     searchBook,
     getAllBookTitles,
     addBook,
-    deleteBook
+    deleteBookEnd,
+    loanEnd
     } from "./settings";
 
  
@@ -104,9 +105,15 @@ const postBook = (newBook) => {
   .then(handleHttpErrors);
 };
 
+const makeLoan = (newLoan) => {
+  const options = makeOptions("POST", true, newLoan);
+  return fetch(mainURL + loanEnd, options)
+  .then(handleHttpErrors);
+};
+
 const deleteBook = (delBook, callback) => {
   const options = makeOptions("DELETE", true);
-  return fetch(mainURL + deleteBook + delBook, options)
+  return fetch(mainURL + deleteBookEnd + delBook, options)
   .then(handleHttpErrors)
   .then((data) => {
     callback(data);
@@ -145,7 +152,8 @@ const makeOptions= (method,addToken,body) =>{
      isAdmin, 
      fetchAllBooks,
      postBook,
-     deleteBook
+     deleteBook,
+     makeLoan
  }
 }
 const facade = apiFacade();

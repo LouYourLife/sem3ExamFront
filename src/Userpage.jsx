@@ -8,6 +8,7 @@ function Userpage() {
   const [title, setTitle] = useState("");
   const [books, setBooks] = useState([]);
   const [bookTitles, setBookTitles] = useState([]);
+  const [newLoan, setNewLoan] = useState({});
   useEffect(() => {
     facade
       .fetchDataUser()
@@ -32,6 +33,20 @@ function Userpage() {
 
   const getBookTitles = () => {
       facade.fetchAllBooks(setBookTitles);
+  };
+
+  const handleChangeLoan = (event) => {
+      const target = event.target;
+      const value = target.value;
+      const prop = target.id;
+      const loan = { ...newLoan, [prop]: value};
+      setNewLoan(loan);
+  }
+
+  const handleSubmitLoan = (event) => {
+      event.preventDefault();
+      console.log(newLoan);
+      facade.makeLoan(newLoan);
   }
 
   return (
@@ -89,6 +104,28 @@ function Userpage() {
                   })}
               </tbody>
           </table>
+          <div>
+              <p>Username</p>
+              <input
+              type="text"
+              id="username"
+              onChange={handleChangeLoan}
+              />
+              <p>Password</p>
+              <input
+              type="text"
+              id="password"
+              onChange={handleChangeLoan}
+              />
+              <p>ISBN</p>
+              <input
+              type="text"
+              id="isbn"
+              onChange={handleChangeLoan}
+              />
+              <br/>
+              <button onClick={handleSubmitLoan}>Make Loan</button>
+          </div>
         </>
       )}
     </div>

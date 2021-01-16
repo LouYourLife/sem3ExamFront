@@ -10,7 +10,8 @@ const userCount = "/api/info/all";
 const searchBook = "/api/book/title/";
 const getAllBookTitles = "/api/book";
 const addBook = "/api/book";
-const deleteBook = "/api/book/";
+const deleteBookEnd = "/api/book/";
+const loanEnd = "/api/book/loan";
 
 export {
     mainURL,
@@ -22,5 +23,6 @@ export {
     searchBook,
     getAllBookTitles,
     addBook,
-    deleteBook
+    deleteBookEnd,
+    loanEnd
 };
